@@ -90,7 +90,12 @@ func (sac *SafeArrayConversion) ToValueArray() (values []interface{}) {
 		case VT_VARIANT:
 			var v VARIANT
 			safeArrayGetElement(sac.Array, i, unsafe.Pointer(&v))
-			values[i] = v.Value()
+
+			if val := v.Value(); val != nil {
+				values[i] = val
+			} else {
+				values[i] = v
+			}
 		default:
 			// TODO
 		}
